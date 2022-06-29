@@ -10,7 +10,7 @@ from fastapi import FastAPI, HTTPException
 
 # enable logging
 logging.basicConfig(
-    # filename=f"log {__name__} ReviewerBot.log",
+    # filename=f"log {__name__} happy-review.log",
     format='%(asctime)s - %(ascName)s - %(levelname)s - %(message)s',
     level=logging.INFO
     )
