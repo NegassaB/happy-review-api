@@ -128,9 +128,10 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# documentation & logo
+# documentation, logo & config files
 *.pdf
 *.png
-
-# config files
 .config
+
+# vscode
+.vscode/
