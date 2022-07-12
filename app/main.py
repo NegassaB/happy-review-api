@@ -1,15 +1,14 @@
 from datetime import datetime
 import logging
-import asyncio
-from typing import Iterable
+from typing import (Iterable, List)
 
 # 3rd party imports
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, Field
+from fastapi import (FastAPI, Header, HTTPException, Request, status)
 import pytz
 
 # my own
-
+from .schemas import (Reviewee, ReviewQuestion, Answer)
+# from schemas import (Reviewee, ReviewQuestion, Answer)
 
 # enable logging
 logging.basicConfig(
@@ -30,31 +29,6 @@ logger = logging.getLogger(__name__)
 # todo: deploy on digital ocean
 
 
-class Answer(BaseModel):
-    """
-    Answer: database model that will hold the answers provided by the users.
-    """
-    id: int = Field(default_factory=int()+1)
-    result_accurancy: str
-    member_support: str = None
-    turnaround_time: str
-    feedback: str = None
-    email: str
-    vid_upload: str
-    answer_ts: datetime = Field(default_factory=datetime.now(tz=pytz.timezone("America/New_York")))
-
-    @classmethod
-    def all(cls, **kwargs):
-        """
-        all similar to Django's `all()` method, it extracts and returns all the created Answer objects as a list.
-
-        Returns: list of all the created Answer objects
-        """
-        all_answers = None
-        all_answers = list()
-        return [all_answers.append(answer) for answer in Answer]
-
-
 def get_application():
     app = FastAPI(title="happy-review-api", version='0.0.1')
     return app
@@ -62,12 +36,22 @@ def get_application():
 
 app = get_application()
 
+fake_db: List[str] = []
+
 
 @app.on_event('startup')
 async def startup_event():
     pass
 
 
-@app.get("/answers/", response_model=Iterable[Answer])
+@app.post("/answers/", status_code=status.HTTP_201_CREATED)
+async def insert_answer(answer: Answer, request: Request):
+    # todo: call db function to save here, till then keep in memory
+    client_host = request.client.host
+    fake_db.append(answer)
+    return {"status": "successfully saved answer", "IP": client_host}
+
+
+@app.get("/answers/", response_model=Answer)
 async def read_main():
     return {"answers": Answer}

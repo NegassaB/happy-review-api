@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import (Any, List, Union, Fie)
+from typing import (Any, List, Union)
 
 # 3rd parties
 import pytz
@@ -16,14 +16,33 @@ class PeeweeGetterDict(GetterDict):
         return res
 
 
+class Reviewee(BaseModel):
+    reviewee_ip: str
+    reviewee_email: str
+    # review_ts: datetime
+
+    class Config:
+        orm_mode = True
+        getter_dict = PeeweeGetterDict
+
+
+class ReviewQuestion(BaseModel):
+    review_question: str
+    # review_question_ts = datetime
+
+    class Config:
+        orm_mode = True
+        getter_dict = PeeweeGetterDict
+
+
 class Answer(BaseModel):
-    result_accurancy: str
-    member_support: str = None
+    result_accuracy: str
+    member_support: Union[str, None] = None
     turnaround_time: str
     feedback: str = None
     email: str
     vid_upload: str
-    answer_ts: datetime
+    # answer_ts: datetime
 
     class Config:
         orm_mode = True
