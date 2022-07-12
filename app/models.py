@@ -6,7 +6,7 @@ from .database import db
 class Reviewee(peewee.Model):
     r_id = peewee.AutoField(null=False, primary_key=True)
     r_ip = peewee.CharField(null=False)
-    r_email = peewee.CharField(null=False, max_length=254)
+    r_email = peewee.CharField(null=False, max_length=254, unique=True)
     r_ts = peewee.TimestampField(default=True, resolution=3)
 
     class Meta:
@@ -36,7 +36,7 @@ class Answer(peewee.Model):
     member_support = peewee.CharField(null=True)
     turnaround_time = peewee.CharField()
     feedback = peewee.TextField(null=True)
-    email = peewee.CharField()
+    email = peewee.CharField(null=False, max_length=254, unique=True)
     vid_upload = peewee.CharField()
     reviwee = peewee.ForeignKeyField(
         Reviewee,
