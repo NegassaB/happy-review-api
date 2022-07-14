@@ -1,20 +1,21 @@
+import logging
+
+# 3rd parties
 import peewee
 
-from .database import db
+# my own
+from .database import (db, db_state_default)
 
 
-class Reviewee(peewee.Model):
-    r_id = peewee.AutoField(null=False, primary_key=True)
-    r_ip = peewee.CharField(null=False)
-    r_email = peewee.CharField(null=False, max_length=254, unique=True)
-    r_ts = peewee.TimestampField(default=True, resolution=3)
+# enable logging
+logging.basicConfig(
+    # filename=f"log {__name__} happy-review.log",
+    format='%(asctime)s - %(funcName)s - %(levelname)s - %(message)s',
+    level=logging.INFO
+    )
 
-    class Meta:
-        table_name = "reviewee_table"
-        database = db
-
-    def __str__():
-        return super().__str__()
+# get logger
+logger = logging.getLogger(__name__)
 
 
 class ReviewQuestion(peewee.Model):
@@ -38,13 +39,9 @@ class Answer(peewee.Model):
     feedback = peewee.TextField(null=True)
     email = peewee.CharField(null=False, max_length=254, unique=True)
     vid_upload = peewee.CharField()
-    reviwee = peewee.ForeignKeyField(
-        Reviewee,
-        backref="responding_user",
-        on_delete=None,
-        to_field="r_email",
-        on_update="CASCADE"
-        )
+    reviewee_host = peewee.CharField(null=False, unique=True)
+    reviewee_email = peewee.CharField(null=False, max_length=254, unique=True)
+    # todo: ans_status can only be PENDING, COMPLETED
     ans_status = peewee.CharField(null=False, max_length=20, default="PENDING")
     answer_ts = peewee.TimestampField(default=True, resolution=3)
 

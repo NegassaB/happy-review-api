@@ -16,9 +16,7 @@ def test_insert_answer_fails_on_empty():
             "vid_upload": ""
         }
         )
-    assert response.status_code == 422
-    assert response.reason == "Unprocessable Entity"
-    print(response.json())
+    assert response.status_code == 403
 
 
 def test_insert_answer():
