@@ -5,8 +5,8 @@ from typing import (Iterable, List)
 from fastapi import (Depends, FastAPI, Header, HTTPException, Request, status, Response)
 
 # my own
-from .schemas import (ReviewQuestionSchema, AnswerSchema)
-from .crud import (
+from app.schemas import (ReviewQuestionSchema, AnswerSchema)
+from app.crud import (
     create_db_tables,
     open_db_cxn,
     close_db_cxn,
@@ -14,11 +14,20 @@ from .crud import (
     get_reviewee_host,
     create_answer,
     get_single_answer,
-    get_all_answers
+    all_answers
 )
-from .database import (db, db_state_default)
-# from schemas import (ReviewQuestion, Answer)
-# from crud import (create_db_tables, open_db_cxn, close_db_cxn, get_reviewee_email, get_reviewee_host)
+from app.database import (db, db_state_default)
+# from schemas import (ReviewQuestionSchema, AnswerSchema)
+# from crud import (
+#     create_db_tables,
+#     open_db_cxn,
+#     close_db_cxn,
+#     get_reviewee_email,
+#     get_reviewee_host,
+#     create_answer,
+#     get_single_answer,
+#     all_answers
+# )
 # from database import (db, db_state_default)
 
 # enable logging
@@ -105,14 +114,13 @@ async def insert_answer(answer: AnswerSchema, request: Request):
         return {"status": "successfully saved answer", "IP": reviewee_host}
 
 
-@app.get("/answers/{answer_id}")
-async def get_an_answer(answer_id: int, answer: AnswerSchema):
+@app.get("/answers/{answer_id}", status_code=status.HTTP_200_OK, response_model=AnswerSchema, dependencies=[Depends(get_db)])
+async def get_an_answer(answer_id: int):
     answer = get_single_answer(id=answer_id)
-    return {"answer": answer}
+    return answer
 
 
-@app.get("/answers/", response_model=List[AnswerSchema], dependencies=[Depends(get_db)])
+@app.get("/answers/", status_code=status.HTTP_200_OK, response_model=List[AnswerSchema], dependencies=[Depends(get_db)])
 async def get_all_answers():
-    return {"answers": AnswerSchema}
-
-
+    answers = all_answers()
+    return answers

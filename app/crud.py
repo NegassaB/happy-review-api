@@ -4,12 +4,13 @@ import logging
 import peewee
 
 # my own
-from .models import (AnswerModel, ReviewQuestionModel)
-from .schemas import AnswerSchema as AnswerSchema
-from .database import (db, db_state_default)
-# from models import (Answer, ReviewQuestion)
-# from schemas import Answer as AnswerSchema
+from app.models import (AnswerModel, ReviewQuestionModel)
+from app.schemas import AnswerSchema as AnswerSchema
+from app.database import (db, db_state_default)
+# from models import (AnswerModel, ReviewQuestionModel)
+# from schemas import AnswerSchema
 # from database import (db, db_state_default)
+
 # enable logging
 logging.basicConfig(
     # filename=f"log {__name__} happy-review.log",
@@ -91,12 +92,12 @@ def create_answer(answer: AnswerSchema, host: str):
 
 def get_single_answer(id: int):
     try:
-        return AnswerModel.get_by_id(pk=id)
+        return AnswerModel.filter(AnswerModel.ans_id == id).first()
     except Exception as e:
         default_exception(e)
 
 
-def get_all_answers(skip: int = 0, limit: int = 100):
+def all_answers(skip: int = 0, limit: int = 100):
     try:
         return list(AnswerModel.select().offset(skip).limit(limit))
     except Exception as e:

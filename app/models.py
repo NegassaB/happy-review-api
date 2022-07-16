@@ -4,7 +4,7 @@ import logging
 import peewee
 
 # my own
-from .database import (db, db_state_default)
+from app.database import (db, db_state_default)
 # from database import (db, db_state_default)
 
 

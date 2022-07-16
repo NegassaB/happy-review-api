@@ -8,7 +8,7 @@ from pydantic import BaseModel as BaseSchema
 from pydantic.utils import GetterDict
 
 
-class PeeweeGetterDict(GetterDict):
+class PeeweeGetterDict(GetterDict): # seems like it serializes db output against pydantic schemas for individual results & converts to a list when it's gross results
     def get(self, key: Any, default: Any = None):
         res = getattr(self._obj, key, default)
         if isinstance(res, peewee.ModelSelect):

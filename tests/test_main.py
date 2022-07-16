@@ -1,6 +1,10 @@
+# 3rd party
 from fastapi.testclient import TestClient
 import pytest
+
+# my own
 from app.main import app
+from app.models import AnswerModel
 
 client = TestClient(app)
 
@@ -14,7 +18,7 @@ def test_insert_answer_fails_on_empty():
                 "member_support": "",
                 "turnaround_time": "",
                 "feedback": "",
-                "email": "dd",
+                "email": "",
                 "vid_upload": ""
             }
             )
@@ -40,14 +44,20 @@ def test_insert_answer():
 
 def test_get_an_answer():
     with TestClient(app) as client:
-        ans_2_test = client.get("/answers/1")
-        assert ans_2_test is not None
-        assert ans_2_test.reviewee_host == "testClient"
+        response = client.get("/answers/1")
+        assert response.status_code == 200
+        assert response.json() == {
+            "result_accuracy": "5 stars",
+            "member_support": "5 stars",
+            "turnaround_time": "5 stars",
+            "feedback": "blah blah",
+            "email": "blah@blah.com",
+            "vid_upload": "/somewhere/at/somewhere"
+        }
 
 
 def test_get_all_answers():
     with TestClient(app) as client:
-        all_ans = client.get("/answers/")
-        assert all_ans is not None
-        assert isinstance(all_ans, list)
-        assert len(all_ans) != 0
+        response = client.get("/answers/")
+        assert response.status_code == 200
+        assert len(response.json()) == 2

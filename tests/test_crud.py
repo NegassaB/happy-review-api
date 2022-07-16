@@ -10,7 +10,7 @@ from app.crud import (
     get_reviewee_email,
     get_reviewee_host,
     get_single_answer,
-    get_all_answers,
+    all_answers,
 )
 from app.database import db
 from app.schemas import AnswerSchema
@@ -62,8 +62,8 @@ def test7_get_single_answer():
     assert res.ans_id == 1
 
 
-def test8_get_all_answers():
-    res = get_all_answers()
+def test8_all_answers():
+    res = all_answers()
     assert isinstance(res, list)
     assert len(res) != 0
 
