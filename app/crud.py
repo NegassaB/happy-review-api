@@ -4,10 +4,12 @@ import logging
 import peewee
 
 # my own
-from .models import (Answer, ReviewQuestion)
-from . import schemas
+from .models import (AnswerModel, ReviewQuestionModel)
+from .schemas import AnswerSchema as AnswerSchema
 from .database import (db, db_state_default)
-
+# from models import (Answer, ReviewQuestion)
+# from schemas import Answer as AnswerSchema
+# from database import (db, db_state_default)
 # enable logging
 logging.basicConfig(
     # filename=f"log {__name__} happy-review.log",
@@ -17,6 +19,11 @@ logging.basicConfig(
 
 # get logger
 logger = logging.getLogger(__name__)
+
+
+def default_exception(exception):
+    logger.exception(f"Exception occurred -- {exception}", exc_info=True)
+    raise exception
 
 
 def open_db_cxn():
@@ -35,9 +42,9 @@ def create_db_tables():
     open_db_cxn()
     tbl_list = []
     if not db.table_exists("review_question_table"):
-        tbl_list.append(ReviewQuestion)
+        tbl_list.append(ReviewQuestionModel)
     if not db.table_exists("answer_table"):
-        tbl_list.append(Answer)
+        tbl_list.append(AnswerModel)
 
     try:
         db.create_tables(tbl_list)
@@ -45,8 +52,7 @@ def create_db_tables():
         logger.exception(f"PeeweeException occurred -- {pex}", exc_info=True)
         raise pex
     except Exception as e:
-        logger.exception(f"Excpetion occurred -- {e}", exc_info=True)
-        raise e
+        default_exception(e)
     else:
         logger.info("successfully created db tables")
     finally:
@@ -54,11 +60,47 @@ def create_db_tables():
 
 
 def get_reviewee_host(host: str):
-    return Answer.filter(Answer.reviewee_host == host).first()
+    try:
+        return AnswerModel.filter(AnswerModel.reviewee_host == host).first()
+    except Exception as e:
+        logger.exception(f"Exception occurred -- {e}", exc_info=True)
+        return None
 
 
 def get_reviewee_email(email: str):
-    return Answer.filter(Answer.reviewee_email == email).first()
+    try:
+        return AnswerModel.filter(AnswerModel.email == email).first()
+    except Exception as e:
+        default_exception(e)
+
+
+def create_answer(answer: AnswerSchema, host: str):
+    try:
+        return AnswerModel(
+            result_accuracy=answer.result_accuracy,
+            member_support=answer.member_support,
+            turnaround_time=answer.turnaround_time,
+            feedback=answer.feedback,
+            vid_upload=answer.vid_upload,
+            email=answer.email,
+            reviewee_host=host
+        ).save()
+    except Exception as e:
+        default_exception(e)
+
+
+def get_single_answer(id: int):
+    try:
+        return AnswerModel.get_by_id(pk=id)
+    except Exception as e:
+        default_exception(e)
+
+
+def get_all_answers(skip: int = 0, limit: int = 100):
+    try:
+        return list(AnswerModel.select().offset(skip).limit(limit))
+    except Exception as e:
+        default_exception(e)
 
 
 # def get_user(user_id: int):

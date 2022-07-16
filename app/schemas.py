@@ -4,7 +4,7 @@ from typing import (Any, List, Union)
 # 3rd parties
 import pytz
 import peewee
-from pydantic import BaseModel
+from pydantic import BaseModel as BaseSchema
 from pydantic.utils import GetterDict
 
 
@@ -16,33 +16,21 @@ class PeeweeGetterDict(GetterDict):
         return res
 
 
-class Reviewee(BaseModel):
-    reviewee_ip: str
-    reviewee_email: str
-    # review_ts: datetime
-
-    class Config:
-        orm_mode = True
-        getter_dict = PeeweeGetterDict
-
-
-class ReviewQuestion(BaseModel):
+class ReviewQuestionSchema(BaseSchema):
     review_question: str
-    # review_question_ts = datetime
 
     class Config:
         orm_mode = True
         getter_dict = PeeweeGetterDict
 
 
-class Answer(BaseModel):
+class AnswerSchema(BaseSchema):
     result_accuracy: str
     member_support: Union[str, None] = None
     turnaround_time: str
-    feedback: str = None
-    email: str
+    feedback: Union[str, None] = None
     vid_upload: str
-    # answer_ts: datetime
+    email: str
 
     class Config:
         orm_mode = True
