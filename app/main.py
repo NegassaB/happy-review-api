@@ -32,7 +32,6 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # todo: get called when `submit review` button is called on the UI
-# todo: use sqlite for storing answers & user email
 # todo: build upload feature that will store the user uploaded video in a folder named `upload` and it's address in db
 # todo: name each uploaded video with user email + name
 # todo: deploy on digital ocean
@@ -106,12 +105,14 @@ async def insert_answer(answer: AnswerSchema, request: Request):
         return {"status": "successfully saved answer", "IP": reviewee_host}
 
 
+@app.get("/answers/{answer_id}")
+async def get_an_answer(answer_id: int, answer: AnswerSchema):
+    answer = get_single_answer(id=answer_id)
+    return {"answer": answer}
+
+
 @app.get("/answers/", response_model=List[AnswerSchema], dependencies=[Depends(get_db)])
 async def get_all_answers():
     return {"answers": AnswerSchema}
 
 
-@app.get("/answers/{answer_id}")
-async def get_an_answer(answer_id: int, answer: AnswerSchema):
-    answer = get_single_answer(id=answer_id)
-    return {"answer": answer}

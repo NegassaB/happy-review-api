@@ -92,3 +92,7 @@ def test10_create_answer_fails_on_empty():
             "vid_upload": ""
         }
         create_answer(AnswerSchema(**json), host="1.1.1.1")
+
+
+def test11_create_review_question():
+    pass

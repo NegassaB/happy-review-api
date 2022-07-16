@@ -36,3 +36,18 @@ def test_insert_answer():
             )
         assert response.status_code == 201
         assert response.json() == {"status": "successfully saved answer", "IP": "testclient"}
+
+
+def test_get_an_answer():
+    with TestClient(app) as client:
+        ans_2_test = client.get("/answers/1")
+        assert ans_2_test is not None
+        assert ans_2_test.reviewee_host == "testClient"
+
+
+def test_get_all_answers():
+    with TestClient(app) as client:
+        all_ans = client.get("/answers/")
+        assert all_ans is not None
+        assert isinstance(all_ans, list)
+        assert len(all_ans) != 0
