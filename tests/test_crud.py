@@ -7,7 +7,6 @@ from app.crud import (
     open_db_cxn,
     close_db_cxn,
     create_db_tables,
-    get_reviewee_email,
     get_reviewee_host,
     get_single_answer,
     all_answers,
@@ -47,11 +46,6 @@ def test4_create_answer():
 
 
 def test5_get_reviewee_host():
-    res = get_reviewee_email("")
-    assert res is None
-
-
-def test6_get_reviewee_email():
     res = get_reviewee_host("")
     assert res is None
 

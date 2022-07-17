@@ -9,7 +9,7 @@ from app.models import AnswerModel
 client = TestClient(app)
 
 
-def test_insert_answer_fails_on_empty():
+def test1_insert_answer_fails_on_empty():
     with TestClient(app) as client:
         response = client.post(
             "/answers/",
@@ -26,7 +26,7 @@ def test_insert_answer_fails_on_empty():
         assert response.json() == {"detail": "one or more of the required fields is empty"}
 
 
-def test_insert_answer():
+def test2_insert_answer():
     with TestClient(app) as client:
         response = client.post(
             "/answers/",
@@ -43,7 +43,24 @@ def test_insert_answer():
         assert response.json() == {"status": "successfully saved answer", "IP": "testclient"}
 
 
-def test_get_an_answer():
+def test3_insert_answer_fails_on_duplicate():
+    with TestClient(app) as client:
+        response = client.post(
+            "/answers/",
+            json={
+                "result_accuracy": "5 stars",
+                "member_support": "5 stars",
+                "turnaround_time": "5 stars",
+                "feedback": "blah blah",
+                "email": "blah@blah.com",
+                "vid_upload": "/somewhere/at/somewhere"
+            }
+            )
+        assert response.status_code == 406
+        assert "UNIQUE constraint failed:" in response.json()['detail']
+
+
+def test4_get_an_answer():
     with TestClient(app) as client:
         response = client.get("/answers/1")
         assert response.status_code == 200
@@ -57,7 +74,7 @@ def test_get_an_answer():
         }
 
 
-def test_get_all_answers():
+def test5_get_all_answers():
     with TestClient(app) as client:
         response = client.get("/answers/")
         assert response.status_code == 200
