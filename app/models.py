@@ -18,10 +18,16 @@ logging.basicConfig(
 # get logger
 logger = logging.getLogger(__name__)
 
+# todo: updated everything in accordance with rq_question including crud, main and their tests
+
 
 class ReviewQuestionModel(peewee.Model):
     rq_id = peewee.AutoField(null=False, primary_key=True)
-    review_question = peewee.CharField(unique=True)
+    rq_question1 = peewee.CharField()
+    rq_question2 = peewee.CharField()
+    rq_question3 = peewee.CharField()
+    rq_question4 = peewee.CharField()
+    rq_question5 = peewee.CharField()
     rq_ts = peewee.TimestampField(default=True, resolution=3)
 
     class Meta:
@@ -34,6 +40,7 @@ class ReviewQuestionModel(peewee.Model):
 
 class AnswerModel(peewee.Model):
     ans_id = peewee.AutoField(null=False, primary_key=True)
+    review_question = peewee.ForeignKeyField(ReviewQuestionModel, on_delete=None, on_update="CASCADE")
     result_accuracy = peewee.CharField(null=False)
     member_support = peewee.CharField(null=True)
     turnaround_time = peewee.CharField(null=False)
