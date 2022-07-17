@@ -81,17 +81,7 @@ async def startup_event():
 
 @app.post("/answers/", status_code=status.HTTP_201_CREATED, dependencies=[Depends(get_db)])
 async def insert_answer(answer: AnswerSchema, request: Request):
-    reviewee_email, reviewee_host = answer.email, request.client.host
-    if not reviewee_email:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="email was not provided"
-        )
-    if get_reviewee_email(reviewee_email) is not None:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="the email already exists in the system"
-        )
+    reviewee_host = request.client.host
     if not reviewee_host:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -108,7 +98,7 @@ async def insert_answer(answer: AnswerSchema, request: Request):
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_406_NOT_ACCEPTABLE,
-            detail=f"Please provide answers to all the mandatory review questions {e}"
+            detail=f"{e}"
         )
     else:
         return {"status": "successfully saved answer", "IP": reviewee_host}

@@ -68,26 +68,14 @@ def get_reviewee_host(host: str):
         return None
 
 
-def get_reviewee_email(email: str):
-    try:
-        return AnswerModel.filter(AnswerModel.email == email).first()
-    except Exception as e:
-        default_exception(e)
-
-
 def create_answer(answer: AnswerSchema, host: str):
-    try:
-        return AnswerModel(
-            result_accuracy=answer.result_accuracy,
-            member_support=answer.member_support,
-            turnaround_time=answer.turnaround_time,
-            feedback=answer.feedback,
-            vid_upload=answer.vid_upload,
-            email=answer.email,
-            reviewee_host=host
-        ).save()
-    except Exception as e:
-        default_exception(e)
+    if len(answer.result_accuracy) > 1 and len(answer.turnaround_time) > 1 and len(answer.vid_upload) > 1 and len(answer.email) > 1:
+        try:
+            return AnswerModel(**answer.dict(), reviewee_host=host).save()
+        except Exception as e:
+            default_exception(e)
+    else:
+        default_exception(Exception("one or more of the required fields is empty"))
 
 
 def get_single_answer(id: int):
