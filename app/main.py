@@ -42,6 +42,8 @@ logger = logging.getLogger(__name__)
 # todo: build upload feature that will store the user uploaded video in a folder named `upload` and it's address in db
 # todo: name each uploaded video with user email + name
 # todo: deploy on digital ocean
+# todo: Update questions via ReviewQuestion model
+# todo: display questions & answers on Admin dashboard
 
 
 async def reset_db_state():
