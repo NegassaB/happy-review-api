@@ -1,8 +1,11 @@
 import logging
-from typing import (Iterable, List)
+from typing import (List)
 
 # 3rd party imports
 from fastapi import (Depends, FastAPI, Header, HTTPException, Request, status, Response)
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import HTMLResponse
 
 # my own
 from app.schemas import (ReviewQuestionSchema, AnswerSchema)
@@ -73,6 +76,12 @@ def get_application():
 
 app = get_application()
 
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
+# app.mount("/static", StaticFiles(directory="static"), name="static")
+
+templates = Jinja2Templates(directory="app/templates")
+# templates = Jinja2Templates(directory="templates")
+
 
 @app.on_event('startup')
 async def startup_event():
@@ -114,3 +123,8 @@ async def get_an_answer(answer_id: int):
 async def get_all_answers():
     answers = all_answers()
     return answers
+
+
+@app.get("/dashboard", response_class=HTMLResponse)
+async def dashboard(request: Request):
+    return templates.TemplateResponse("dashboard.html", {"request": request, "data": "hello"})
