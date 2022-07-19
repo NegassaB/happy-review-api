@@ -81,7 +81,7 @@ def test5_get_all_answers():
         assert len(response.json()) != 0
 
 
-def test1_dashboard_gets_called():
+def test6_dashboard_gets_called():
     with TestClient(app) as client:
         response = client.get("/dashboard")
         assert response.status_code == 200
