@@ -22,9 +22,9 @@
             <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="/dashboard">Happy Review</a>
         </header>
         <main class="col-md-9 col-lg-10 px-md-4">
-            <div class="table-responsive">
-                <table class="table table-stripped table-sm">
-                    <thead>
+            <div class="table-responsive-sm">
+                <table class="table table-stripped table-hover align-middle">
+                    <thead class="">
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Result Accuracy</th>
@@ -39,8 +39,8 @@
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
+                    <tbody class="table-group-divider">
+                        <tr scope="row">
                             {% for answer in answers %}
                             <td>{{answer.ans_id}}</td>
                             <td>{{answer.result_accuracy}}</td>
@@ -50,8 +50,12 @@
                             <td><a href="{{answer.vid_upload}}">recording</td>
                             <td><a href="mailto:{{answer.email}}">{{answer.email}}</a></td>
                             <td>{{answer.reviewee_host}}</td>
-                            <!--todo: make this into a drop down box -->
-                            <td>{{answer.ans_status}}</td>
+                            <td>
+                                <select class="form-select form-select-sm" style="width: 112%;">
+                                    <option selected>{{answer.ans_status}}</option>
+                                    <option value="COMPLETED">COMPLETED</option>
+                                </select>
+                            </td>
                             <td>{{answer.answer_ts}}</td>
                             <td><input type="submit" value="submit"></td>
                             {% endfor %}
