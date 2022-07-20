@@ -87,3 +87,12 @@ def test6_dashboard_gets_called():
         assert response.status_code == 200
         assert response.template.name == "dashboard.html"
         assert response.context["data"] == "hello"
+
+
+def test7_dashboard_pupulates_table():
+    with TestClient(app) as client:
+        response = client.get("/dashboard")
+        assert response.status_code == 200
+        assert response.template.name == "dashboard.html"
+        assert isinstance(response.context["answers"], list)
+        assert response.context["answers"] is not []

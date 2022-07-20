@@ -85,7 +85,7 @@ def get_single_answer(id: int):
         default_exception(e)
 
 
-def all_answers(skip: int = 0, limit: int = 100):
+def all_answers(skip: int = 0, limit: int = 1000):
     try:
         return list(AnswerModel.select().offset(skip).limit(limit))
     except Exception as e:
