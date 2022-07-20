@@ -8,8 +8,19 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 
 # my own
-from app.schemas import (ReviewQuestionSchema, AnswerSchema)
-from app.crud import (
+# from app.schemas import (ReviewQuestionSchema, AnswerSchema)
+# from app.crud import (
+    # create_db_tables,
+    # open_db_cxn,
+    # close_db_cxn,
+    # get_reviewee_host,
+    # create_answer,
+    # get_single_answer,
+    # all_answers
+# )
+# from app.database import (db, db_state_default)
+from schemas import (ReviewQuestionSchema, AnswerSchema)
+from crud import (
     create_db_tables,
     open_db_cxn,
     close_db_cxn,
@@ -18,18 +29,7 @@ from app.crud import (
     get_single_answer,
     all_answers
 )
-from app.database import (db, db_state_default)
-# from schemas import (ReviewQuestionSchema, AnswerSchema)
-# from crud import (
-#     create_db_tables,
-#     open_db_cxn,
-#     close_db_cxn,
-#     get_reviewee_host,
-#     create_answer,
-#     get_single_answer,
-#     all_answers
-# )
-# from database import (db, db_state_default)
+from database import (db, db_state_default)
 
 # enable logging
 logging.basicConfig(
@@ -76,11 +76,11 @@ def get_application():
 
 app = get_application()
 
-app.mount("/static", StaticFiles(directory="app/static"), name="static")
-# app.mount("/static", StaticFiles(directory="static"), name="static")
+# app.mount("/static", StaticFiles(directory="app/static"), name="static")
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
-templates = Jinja2Templates(directory="app/templates")
-# templates = Jinja2Templates(directory="templates")
+# templates = Jinja2Templates(directory="app/templates")
+templates = Jinja2Templates(directory="templates")
 
 
 @app.on_event('startup')
@@ -125,7 +125,7 @@ async def get_all_answers():
     return answers
 
 
-@app.get("/dashboard", response_class=HTMLResponse, status_code=200)
+@app.get("/dashboard/", response_class=HTMLResponse, status_code=200)
 async def dashboard(request: Request):
     answers = all_answers()
     return templates.TemplateResponse("dashboard.html", {"request": request, "answers": answers})

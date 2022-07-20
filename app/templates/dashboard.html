@@ -10,53 +10,57 @@
         <title>Dashboard</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="{{ url_for('static', path="css/styles.css")}}">
+        <link rel="stylesheet" href="{{ url_for('static', path="css/dashboard.css") }}">
+        <link rel="stylesheet" href="{{ url_for('static', path="css/more_style.css") }}">
+        <link rel="stylesheet" href="{{ url_for('static', path="css/bootstrap.min.css" )}}">
     </head>
     <body>
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-        <header>
-            <!-- todo: navbar here with some details like logo -->
-            <img src="" alt="">
+        <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+            <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="/dashboard">Happy Review</a>
         </header>
-        <section>
-            <h1>Dashboard</h1>
-            <table>
-                <thead>
-                    <tr>Answer ID</tr>
-                    <tr>Result Accuracy</tr>
-                    <tr>Member Support</tr>
-                    <tr>Turnaround Time</tr>
-                    <tr>Feedback</tr>
-                    <tr>Video</tr>
-                    <tr>Email</tr>
-                    <tr>Reviewee IP</tr>
-                    <tr>Status</tr>
-                    <tr>Timestamp</tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        {% for answer in answers %}
-                        <td>{{answer.ans_id}}</td>
-                        <td>{{answer.result_accurancy}}</td>
-                        <td>{{answer.member_support}}</td>
-                        <td>{{answer.turnaround_time}}</td>
-                        <td>{{answer.feedback}}</td>
-                        <td>{{answer.vid_upload}}</td>
-                        <td><a href="mailto:{{answer.email}}">{{answer.email}}</a>></td>
-                        <td>{{answer.reviewee_host}}</td>
-                        <td>{{ans_status}}</td>
-                        <td>{{answer_ts}}</td>
-                        {% endfor %}
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr></tr>
-                </tfoot>
-            </table>
-        </section>
+        <main class="col-md-9 col-lg-10 px-md-4">
+            <div class="table-responsive">
+                <table class="table table-stripped table-sm">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Result Accuracy</th>
+                            <th scope="col">Member Support</th>
+                            <th scope="col">Turnaround Time</th>
+                            <th scope="col">Feedback</th>
+                            <th scope="col">Video</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">IP</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Timestamp</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            {% for answer in answers %}
+                            <td>{{answer.ans_id}}</td>
+                            <td>{{answer.result_accuracy}}</td>
+                            <td>{{answer.member_support}}</td>
+                            <td>{{answer.turnaround_time}}</td>
+                            <td>{{answer.feedback}}</td>
+                            <td><a href="{{answer.vid_upload}}">recording</td>
+                            <td><a href="mailto:{{answer.email}}">{{answer.email}}</a></td>
+                            <td>{{answer.reviewee_host}}</td>
+                            <!--todo: make this into a drop down box -->
+                            <td>{{answer.ans_status}}</td>
+                            <td>{{answer.answer_ts}}</td>
+                            <td><input type="submit" value="submit"></td>
+                            {% endfor %}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
         <footer></footer>
-        <script src="" async defer></script>
+        <script src=""{{ url_for('static', path="js/bootstrap.bundle.js.css")}}"" async defer></script>
     </body>
 </html>

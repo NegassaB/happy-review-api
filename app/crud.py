@@ -4,12 +4,12 @@ import logging
 import peewee
 
 # my own
-from app.models import (AnswerModel, ReviewQuestionModel)
-from app.schemas import AnswerSchema as AnswerSchema
-from app.database import (db, db_state_default)
-# from models import (AnswerModel, ReviewQuestionModel)
-# from schemas import AnswerSchema
-# from database import (db, db_state_default)
+# from app.models import (AnswerModel, ReviewQuestionModel)
+# from app.schemas import AnswerSchema as AnswerSchema
+# from app.database import (db, db_state_default)
+from models import (AnswerModel, ReviewQuestionModel)
+from schemas import AnswerSchema
+from database import (db, db_state_default)
 
 # enable logging
 logging.basicConfig(
