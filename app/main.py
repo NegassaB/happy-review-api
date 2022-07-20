@@ -10,13 +10,13 @@ from fastapi.responses import HTMLResponse
 # my own
 # from app.schemas import (ReviewQuestionSchema, AnswerSchema)
 # from app.crud import (
-    # create_db_tables,
-    # open_db_cxn,
-    # close_db_cxn,
-    # get_reviewee_host,
-    # create_answer,
-    # get_single_answer,
-    # all_answers
+#    create_db_tables,
+#     open_db_cxn,
+#     close_db_cxn,
+#     get_reviewee_host,
+#     create_answer,
+#     get_single_answer,
+#     all_answers
 # )
 # from app.database import (db, db_state_default)
 from schemas import (ReviewQuestionSchema, AnswerSchema)
