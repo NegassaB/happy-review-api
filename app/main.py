@@ -125,7 +125,7 @@ async def get_all_answers():
     return answers
 
 
-@app.get("/dashboard", response_class=HTMLResponse)
+@app.get("/dashboard", response_class=HTMLResponse, status_code=200)
 async def dashboard(request: Request):
     answers = all_answers()
     return templates.TemplateResponse("dashboard.html", {"request": request, "answers": answers})
