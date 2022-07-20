@@ -81,15 +81,7 @@ def test5_get_all_answers():
         assert len(response.json()) != 0
 
 
-def test6_dashboard_gets_called():
-    with TestClient(app) as client:
-        response = client.get("/dashboard")
-        assert response.status_code == 200
-        assert response.template.name == "dashboard.html"
-        assert response.context["data"] == "hello"
-
-
-def test7_dashboard_pupulates_table():
+def test6_dashboard_pupulates_table():
     with TestClient(app) as client:
         response = client.get("/dashboard")
         assert response.status_code == 200
