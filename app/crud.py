@@ -4,12 +4,12 @@ import logging
 import peewee
 
 # my own
-from app.models import (AnswerModel, ReviewQuestionModel)
-from app.schemas import AnswerSchema as AnswerSchema
-from app.database import (db, db_state_default)
-# from models import (AnswerModel, ReviewQuestionModel)
-# from schemas import AnswerSchema
-# from database import (db, db_state_default)
+# from app.models import (AnswerModel, ReviewQuestionModel)
+# from app.schemas import AnswerSchema as AnswerSchema
+# from app.database import (db, db_state_default)
+from models import (AnswerModel, ReviewQuestionModel)
+from schemas import AnswerSchema
+from database import (db, db_state_default)
 
 # enable logging
 logging.basicConfig(
@@ -85,7 +85,7 @@ def get_single_answer(id: int):
         default_exception(e)
 
 
-def all_answers(skip: int = 0, limit: int = 100):
+def all_answers(skip: int = 0, limit: int = 1000):
     try:
         return list(AnswerModel.select().offset(skip).limit(limit))
     except Exception as e:

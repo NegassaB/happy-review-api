@@ -4,8 +4,8 @@ import logging
 import peewee
 
 # my own
-from app.database import (db, db_state_default)
-# from database import (db, db_state_default)
+# from app.database import (db, db_state_default)
+from database import (db, db_state_default)
 
 
 # enable logging
@@ -43,7 +43,7 @@ class AnswerModel(peewee.Model):
     reviewee_host = peewee.CharField(null=False, unique=True)
     # todo: ans_status can only be PENDING, COMPLETED
     ans_status = peewee.CharField(null=False, max_length=20, default="PENDING")
-    answer_ts = peewee.TimestampField(default=True, resolution=3)
+    answer_ts = peewee.TimestampField(resolution=3)
 
     class Meta:
         table_name = "answer_table"
